@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lmr/auth/login.dart';
 import 'package:lmr/dashboard/dashboard.dart';
 import 'package:lmr/services/auth.dart';
 
@@ -18,7 +19,7 @@ class HomeScreen extends StatelessWidget {
         } else if (snapshot.hasData) {
           return const DashboardScreen();
         } else {
-          return const Text('Login');
+          return const LoginScreen();
         }
     }));
   }
