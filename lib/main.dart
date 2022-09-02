@@ -39,14 +39,17 @@ class _AppState extends State<App> {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-              routes: appRoutes,
-              // theme: appTheme,
-              debugShowCheckedModeBanner: false,
+            routes: appRoutes,
+            // theme: appTheme,
+            debugShowCheckedModeBanner: false,
           );
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
-        return const Text('loading', textDirection: TextDirection.ltr,);
+        return const Text(
+          'loading',
+          textDirection: TextDirection.ltr,
+        );
       },
     );
   }

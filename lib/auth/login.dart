@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen>{
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, 'register');
+                                  Navigator.pushNamed(context, '/register');
                                 },
                                 // ignore: sort_child_properties_last
                                 child: const Text(
