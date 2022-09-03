@@ -43,6 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -70,96 +72,118 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(left: 35, right: 35),
-                      child: Column(
-                        children: [
-                          TextField(
-                            style: const TextStyle(color: Colors.black),
-                            decoration: InputDecoration(
-                                fillColor: Colors.grey.shade100,
-                                filled: true,
-                                hintText: "Email",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                )),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          TextField(
-                            style: const TextStyle(),
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                fillColor: Colors.grey.shade100,
-                                filled: true,
-                                hintText: "Password",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                )),
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        margin: const EdgeInsets.only(left: 35, right: 35),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
                             children: [
-                              const Text(
-                                'Sign in',
-                                style: TextStyle(
-                                    fontSize: 27, fontWeight: FontWeight.w700),
+                              TextFormField(
+                                  style: const TextStyle(color: Colors.black),
+                                  decoration: InputDecoration(
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      hintText: "Email",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      )),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your email';
+                                    }
+                                  }),
+                              const SizedBox(
+                                height: 30,
                               ),
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundColor: const Color(0xff4c505b),
-                                child: IconButton(
-                                    color: Colors.white,
+                              TextFormField(
+                                  style: const TextStyle(),
+                                  obscureText: true,
+                                  decoration: InputDecoration(
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      hintText: "Password",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      )),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your password';
+                                    }
+                                  }),
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'Sign in',
+                                    style: TextStyle(
+                                        fontSize: 27,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: const Color(0xff4c505b),
+                                    child: IconButton(
+                                        color: Colors.white,
+                                        onPressed: () {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            _signInWithEmailPassword(
+                                                emailController.text,
+                                                passwordController.text);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content:
+                                                      Text('Processing Data')),
+                                            );
+                                          }
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_forward,
+                                        )),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TextButton(
                                     onPressed: () {
-                                      _signInWithEmailPassword(
-                                          emailController.text,
-                                          passwordController.text);
+                                      Navigator.pushNamed(context, '/register');
                                     },
-                                    icon: const Icon(
-                                      Icons.arrow_forward,
-                                    )),
+                                    // ignore: sort_child_properties_last
+                                    child: const Text(
+                                      'Sign Up',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: Color(0xff4c505b),
+                                          fontSize: 18),
+                                    ),
+                                    style: const ButtonStyle(),
+                                  ),
+                                  TextButton(
+                                      onPressed: () {},
+                                      child: const Text(
+                                        'Forgot Password',
+                                        style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: Color(0xff4c505b),
+                                          fontSize: 18,
+                                        ),
+                                      )),
+                                ],
                               )
                             ],
                           ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/register');
-                                },
-                                // ignore: sort_child_properties_last
-                                child: const Text(
-                                  'Sign Up',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: Color(0xff4c505b),
-                                      fontSize: 18),
-                                ),
-                                style: const ButtonStyle(),
-                              ),
-                              TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Forgot Password',
-                                    style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: Color(0xff4c505b),
-                                      fontSize: 18,
-                                    ),
-                                  )),
-                            ],
-                          )
-                        ],
-                      ),
-                    )
+                        ))
                   ],
                 ),
               ),
