@@ -25,21 +25,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _signInWithEmailPassword(String email, String password) async {
-    try {
-      // await AuthService().signInWithEmailAndPassword(email, password);
+    // ignore: unused_local_variable
+    String user = await AuthService().signInWithEmailAndPassword(email, password);
+    // ignore: unnecessary_null_comparison
+    if(user != null){
       // ignore: use_build_context_synchronously
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        if (user == null) {
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil('/register', (route) => false);
-        } else {
-          Navigator.of(context)
+      Navigator.of(context)
               .pushNamedAndRemoveUntil('/dashboard', (route) => false);
-        }
-      });
-    } catch (e) {
-      // ignore: avoid_print
-      print(e);
+    }else{
     }
   }
 
@@ -128,18 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: IconButton(
                                         color: Colors.white,
                                         onPressed: () {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            _signInWithEmailPassword(
-                                                emailController.text,
-                                                passwordController.text);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                  content:
-                                                      Text('Processing Data')),
-                                            );
-                                          }
+                                          _signInWithEmailPassword(emailController.text, passwordController.text);
                                         },
                                         icon: const Icon(
                                           Icons.arrow_forward,

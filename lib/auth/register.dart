@@ -38,7 +38,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       }
     }
 
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
     return Container(
       decoration: const BoxDecoration(
@@ -68,14 +68,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(left: 35, right: 35),
+                      margin: const EdgeInsets.only(left: 35, right: 35),
                       child: Form(
-                        key: _formKey,
+                        key: formKey,
                         child: Column(
                           children: [
                             TextFormField(
                                 controller: nameController,
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -90,7 +90,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       ),
                                     ),
                                     hintText: "Name",
-                                    hintStyle: TextStyle(color: Colors.white),
+                                    hintStyle: const TextStyle(color: Colors.white),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     )),
@@ -104,7 +104,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             TextFormField(
                                 controller: emailController,
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -119,7 +119,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       ),
                                     ),
                                     hintText: "Email",
-                                    hintStyle: TextStyle(color: Colors.white),
+                                    hintStyle: const TextStyle(color: Colors.white),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     )),
@@ -133,7 +133,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             TextFormField(
                                 controller: passwordController,
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                                 obscureText: true,
                                 decoration: InputDecoration(
                                     enabledBorder: OutlineInputBorder(
@@ -149,7 +149,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       ),
                                     ),
                                     hintText: "Password",
-                                    hintStyle: TextStyle(color: Colors.white),
+                                    hintStyle: const TextStyle(color: Colors.white),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     )),
@@ -173,11 +173,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 ),
                                 CircleAvatar(
                                   radius: 30,
-                                  backgroundColor: Color(0xff4c505b),
+                                  backgroundColor: const Color(0xff4c505b),
                                   child: IconButton(
                                       color: Colors.white,
                                       onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
+                                        if (formKey.currentState!.validate()) {
                                           _signUpWithEmail(
                                               emailController.text,
                                               passwordController.text,
