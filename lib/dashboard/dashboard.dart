@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lmr/shared/shared.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class DashboardScreen extends StatelessWidget {
       body: const Center(
         child: Text('Dashboard'),
       ),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }
