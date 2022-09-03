@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lmr/services/auth.dart';
+import 'package:lmr/services/firestore.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -10,24 +12,30 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final programmeController = TextEditingController();
+  final semController = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     nameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
+    programmeController.dispose();
+    semController.dispose();
     super.dispose();
   }
 
   final _formKey = GlobalKey<FormState>();
 
+  Future<void> registerUser(String name, String programme, String sem) async{
+    User user = AuthService().user!;
+    await FirestoreService().completeApplication(user.uid, programme, sem, name);
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
-    
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -56,14 +64,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(left: 35, right: 35),
+                      margin: const EdgeInsets.only(left: 35, right: 35),
                       child: Form(
                         key: _formKey,
                         child: Column(
                           children: [
                             TextFormField(
                                 controller: nameController,
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -78,7 +86,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       ),
                                     ),
                                     hintText: "Name",
-                                    hintStyle: TextStyle(color: Colors.white),
+                                    hintStyle: const TextStyle(color: Colors.white),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     )),
@@ -91,8 +99,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               height: 30,
                             ),
                             TextFormField(
-                                controller: emailController,
-                                style: TextStyle(color: Colors.white),
+                                controller: programmeController,
+                                textCapitalization: TextCapitalization.words,
+                                style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -106,8 +115,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         color: Colors.black,
                                       ),
                                     ),
-                                    hintText: "Email",
-                                    hintStyle: TextStyle(color: Colors.white),
+                                    hintText: "Programme",
+                                    hintStyle: const TextStyle(color: Colors.white),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     )),
@@ -120,9 +129,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               height: 30,
                             ),
                             TextFormField(
-                                controller: passwordController,
-                                style: TextStyle(color: Colors.white),
-                                obscureText: true,
+                                controller: semController,
+                                style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -136,8 +144,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         color: Colors.black,
                                       ),
                                     ),
-                                    hintText: "Password",
-                                    hintStyle: TextStyle(color: Colors.white),
+                                    hintText: "Semister",
+                                    hintStyle: const TextStyle(color: Colors.white),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     )),
@@ -153,7 +161,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
-                                  'Sign Up',
+                                  'Submit',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 27,
@@ -165,7 +173,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   child: IconButton(
                                       color: Colors.white,
                                       onPressed: () {
-                                        
+                                        registerUser(nameController.text, programmeController.text, semController.text);
                                       },
                                       icon: const Icon(
                                         Icons.arrow_forward,
@@ -176,26 +184,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             const SizedBox(
                               height: 40,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, '/login');
-                                  },
-                                  // ignore: sort_child_properties_last
-                                  child: const Text(
-                                    'Sign In',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  ),
-                                  style: const ButtonStyle(),
-                                ),
-                              ],
-                            )
+                            
                           ],
                         ),
                       ),
