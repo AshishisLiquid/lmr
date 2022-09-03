@@ -12,7 +12,8 @@ class AuthService {
   Future<void> signUpWithEmailandPassword(
       String email, String password, String displayname) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         log('No user found for that email.');
@@ -22,23 +23,18 @@ class AuthService {
     }
   }
 
-  Future<void> signInWithEmailAndPassword(
-    String email, String password)
-    async{
-      try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password
-        );
-      } 
-      on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          log('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          log('Wrong password provided for that user.');
-        }
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        log('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        log('Wrong password provided for that user.');
       }
     }
+  }
 
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
