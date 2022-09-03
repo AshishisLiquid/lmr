@@ -1,7 +1,6 @@
 // ignore_for_file: await_only_futures
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../services/auth.dart';
 
@@ -14,27 +13,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
 
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
     super.dispose();
   }
 
-  _signInWithEmailPassword(String email, String password) async {
-    // ignore: unused_local_variable
-    String user = await AuthService().signInWithEmailAndPassword(email, password);
-    // ignore: unnecessary_null_comparison
-    if(user != null){
-      // ignore: use_build_context_synchronously
-      Navigator.of(context)
-              .pushNamedAndRemoveUntil('/dashboard', (route) => false);
-    }else{
-    }
-  }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -70,99 +54,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           key: _formKey,
                           child: Column(
                             children: [
-                              TextFormField(
-                                  style: const TextStyle(color: Colors.black),
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      hintText: "Email",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      )),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your email';
-                                    }
-                                  }),
-                              const SizedBox(
-                                height: 30,
+                              Center(
+                                child: LoginButton(
+                                    color: Colors.blue,
+                                    icon: FontAwesomeIcons.google,
+                                    text: 'Sign in with Google',
+                                    loginMethod: AuthService().googleLogin),
                               ),
-                              TextFormField(
-                                  style: const TextStyle(),
-                                  obscureText: true,
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      hintText: "Password",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      )),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your password';
-                                    }
-                                  }),
-                              const SizedBox(
-                                height: 40,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Sign in',
-                                    style: TextStyle(
-                                        fontSize: 27,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundColor: const Color(0xff4c505b),
-                                    child: IconButton(
-                                        color: Colors.white,
-                                        onPressed: () {
-                                          _signInWithEmailPassword(emailController.text, passwordController.text);
-                                        },
-                                        icon: const Icon(
-                                          Icons.arrow_forward,
-                                        )),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 40,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, '/register');
-                                    },
-                                    // ignore: sort_child_properties_last
-                                    child: const Text(
-                                      'Sign Up',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                          decoration: TextDecoration.underline,
-                                          color: Color(0xff4c505b),
-                                          fontSize: 18),
-                                    ),
-                                    style: const ButtonStyle(),
-                                  ),
-                                  TextButton(
-                                      onPressed: () {},
-                                      child: const Text(
-                                        'Forgot Password',
-                                        style: TextStyle(
-                                          decoration: TextDecoration.underline,
-                                          color: Color(0xff4c505b),
-                                          fontSize: 18,
-                                        ),
-                                      )),
-                                ],
-                              )
                             ],
                           ),
                         ))
@@ -172,6 +70,38 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class LoginButton extends StatelessWidget {
+  final Color color;
+  final IconData icon;
+  final String text;
+  final Function loginMethod;
+
+  const LoginButton(
+      {Key? key,
+      required this.color,
+      required this.icon,
+      required this.text,
+      required this.loginMethod})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: ElevatedButton.icon(
+        icon: Icon(
+          icon,
+          color: Colors.white,
+          size: 20,
+        ),
+        style: TextButton.styleFrom(
+            padding: const EdgeInsets.all(24), backgroundColor: color),
+        onPressed: () => loginMethod(),
+        label: Text(text),
       ),
     );
   }
