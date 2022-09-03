@@ -1,4 +1,8 @@
+// ignore_for_file: await_only_futures
+
 import 'package:flutter/material.dart';
+
+import '../services/auth.dart';
 
 class LoginScreen extends StatefulWidget{
   const LoginScreen({super.key});
@@ -10,6 +14,30 @@ class LoginScreen extends StatefulWidget{
 }
 
 class _LoginScreenState extends State<LoginScreen>{
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+
+  _signInWithEmailPassword(String email, String password) async {
+      try {
+        await AuthService().signInWithEmailAndPassword(email, password);
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (route) => false);
+      } catch (e) {
+        // ignore: avoid_print
+        print(e);
+      }
+    }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -70,21 +98,23 @@ class _LoginScreenState extends State<LoginScreen>{
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                'Sign in',
-                                style: TextStyle(
-                                    fontSize: 27, fontWeight: FontWeight.w700),
-                              ),
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundColor: const Color(0xff4c505b),
-                                child: IconButton(
-                                    color: Colors.white,
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.arrow_forward,
-                                    )),
-                              )
+                                const Text(
+                                  'Sign in',
+                                  style: TextStyle(
+                                      fontSize: 27, fontWeight: FontWeight.w700),
+                                ),
+                                CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: const Color(0xff4c505b),
+                                  child: IconButton(
+                                      color: Colors.white,
+                                      onPressed: () {
+                                        _signInWithEmailPassword(emailController.text, passwordController.text);
+                                      },
+                                      icon: const Icon(
+                                        Icons.arrow_forward,
+                                      )),
+                                )
                             ],
                           ),
                           const SizedBox(
@@ -95,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen>{
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, 'register');
+                                  Navigator.pushNamed(context, '/register');
                                 },
                                 // ignore: sort_child_properties_last
                                 child: const Text(
