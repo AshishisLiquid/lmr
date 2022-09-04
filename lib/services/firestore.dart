@@ -23,4 +23,11 @@ class FirestoreService{
       'displayName': displayName,
     }, SetOptions(merge: true));
   }
+
+  Future<List<Subject>> getAllSubjects() async {
+    final snapshot = await _firestore.collection('subjects').get();
+    var data = snapshot.docs.map((s) => s.data());
+    var subjects = data.map((e) => Subject.fromJson(e));
+    return subjects.toList();
+  }
 }
