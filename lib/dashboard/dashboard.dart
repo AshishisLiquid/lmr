@@ -61,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
+                                          SizedBox(
                                             height: constraints.maxHeight,
                                             width: constraints.maxWidth * 0.5,
                                             child: FittedBox(

@@ -1,11 +1,6 @@
 import 'package:lmr/routes.dart';
-// import 'package:lmr/services/firestore.dart';
-// import 'package:lmr/services/models.dart';
-// import 'package:lmr/themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:lmr/themes.dart';
-// import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +35,6 @@ class _AppState extends State<App> {
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
               routes: appRoutes,
-              // theme: appTheme,
               debugShowCheckedModeBanner: false,
           );
         }

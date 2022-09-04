@@ -5,8 +5,8 @@ part 'models.g.dart';
 class User{
   final String id;
   final String displayName;
-  final String? programme;
-  final String? sem;
+  final String programme;
+  final String sem;
   final String email;
 
   User({
