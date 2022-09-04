@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               padding: const EdgeInsets.only(left: 35, top: 130),
               child: const Text(
-                'Welcome\nBack',
+                'Welcome\nTo LMR',
                 style: TextStyle(color: Colors.white, fontSize: 33),
               ),
             ),
