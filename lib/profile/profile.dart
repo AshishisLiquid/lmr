@@ -1,6 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:lmr/services/auth.dart';
+import 'package:lmr/services/firestore.dart';
+import 'package:lmr/services/models.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = "/profile";
@@ -13,43 +16,51 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        backgroundColor: Colors.blue[400],
-        leading: const BackButton(
-          color: Color.fromARGB(255, 255, 255, 255),
+        appBar: AppBar(
+          title: const Text('Profile'),
+          backgroundColor: Colors.blue[400],
+          leading: const BackButton(
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
         ),
-      ),
-      body: SafeArea(
-          child: Column(
-        children: [
-          //for circle avtar image
-          _getHeader(),
-          const SizedBox(
-            height: 10,
-          ),
-          _profileName("Shagun Deogharkar"),
-          const SizedBox(
-            height: 14,
-          ),
-          _heading("Personal Details"),
-          const SizedBox(
-            height: 6,
-          ),
-          _detailsCard(),
-          const SizedBox(
-            height: 10,
-          ),
-          _heading("Academic Details"),
-          const SizedBox(
-            height: 6,
-          ),
-          _settingsCard(),
-          const Spacer(),
-          logoutButton()
-        ],
-      )),
-    );
+        body: FutureBuilder(
+            future: FirestoreService().getUser(AuthService().user!.uid),
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                User user = snapshot.data as User;
+                return SafeArea(
+                    child: Column(
+                  children: [
+                    //for circle avtar image
+                    _getHeader(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    _profileName(user.displayName),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    _heading("Personal Details"),
+                    const SizedBox(
+                      height: 6,
+                    ),
+                    _detailsCard(user),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    _heading("Academic Details"),
+                    const SizedBox(
+                      height: 6,
+                    ),
+                    _settingsCard(user),
+                    const Spacer(),
+                    logoutButton()
+                  ],
+                ));
+              } else {
+                return const Text('loading');
+              }
+            })));
   }
 
   Widget _getHeader() {
@@ -98,30 +109,23 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _detailsCard() {
+  Widget _detailsCard(User user) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
         elevation: 4,
         child: Column(
-          children: const [
+          children: [
             //row for each deatails
             ListTile(
-              leading: Icon(Icons.email),
-              title: Text("shagun199@gmail.com"),
+              leading: const Icon(Icons.email),
+              title: Text(user.email),
             ),
             Divider(
               height: 0.6,
               color: Colors.black87,
             ),
-            ListTile(
-              leading: Icon(Icons.phone),
-              title: Text("8655292293"),
-            ),
-            Divider(
-              height: 0.6,
-              color: Colors.black87,
-            ),
+           
             ListTile(
               leading: Icon(Icons.location_on),
               title: Text("Navi Mumbai"),
@@ -132,33 +136,33 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _settingsCard() {
+  Widget _settingsCard(User user) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
         elevation: 4,
         child: Column(
-          children: const [
+          children: [
             //row for each deatails
             ListTile(
-              leading: Icon(Icons.school),
-              title: Text("MCA"),
+              leading: const Icon(Icons.school),
+              title: Text(user.programme),
             ),
-            Divider(
+            const Divider(
               height: 0.6,
               color: Colors.black87,
             ),
-            ListTile(
+            const ListTile(
               leading: Icon(Icons.church),
               title: Text("Mumbai University"),
             ),
-            Divider(
+            const Divider(
               height: 0.6,
               color: Colors.black87,
             ),
             ListTile(
               leading: Icon(Icons.workspaces),
-              title: Text("SEM 3"),
+              title: Text("SEM ${user.sem}"),
             )
           ],
         ),
