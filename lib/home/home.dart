@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lmr/auth/login.dart';
 import 'package:lmr/auth/register.dart';
-import 'package:lmr/profile/profile.dart';
-// import 'package:lmr/profile/profile2.dart';
 import 'package:lmr/services/auth.dart';
 
 class HomeScreen extends StatelessWidget {
