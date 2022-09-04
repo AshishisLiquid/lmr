@@ -9,5 +9,5 @@ var appRoutes = {
   '/login': (context) => const LoginScreen(),
   '/complete-application': (context) => const RegistrationScreen(),
   '/dashboard': (context) => const DashboardScreen(),
-  '/profile': (context) => const ProfileScreen(),
+  '/profile': (context) => Profile(),
 };
