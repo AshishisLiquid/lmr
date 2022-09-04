@@ -13,12 +13,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   @override
   void dispose() {
     super.dispose();
   }
-
 
   final _formKey = GlobalKey<FormState>();
 
